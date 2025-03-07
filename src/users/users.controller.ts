@@ -11,7 +11,9 @@ export class UsersController {
   @Post('login')
 
   async loginOrRegister (@Body() loginDto: LoginDto){
+    console.log(loginDto);
     return this.usersService.loginOrRegister(loginDto)
+
   }
 
 

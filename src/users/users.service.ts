@@ -11,30 +11,28 @@ export class UsersService {
 
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository <User>
-  ) {}
+    private readonly userRepository: Repository<User>
+  ) { }
 
-  async generateOtp(): Promise<string>
-  {
-  return Math.floor(1000 + Math.random() * 90000 ).toString();
+  async generateOtp(): Promise<string> {
+    return Math.floor(1000 + Math.random() * 90000).toString();
   }
 
-  async loginOrRegister(loginDto: LoginDto): Promise<{  message: string; otp: string}>
-{
-  const { phoneNumber } = loginDto;
-  let user = await this.userRepository.findOne({where : {phoneNumber}});
-  const otp = await this.generateOtp();
+  async loginOrRegister(loginDto: LoginDto): Promise<{ message: string; otp: string }> {
+    const { phoneNumber } = loginDto;
+    let user = await this.userRepository.findOne({ where: { phoneNumber } });
+    const otp = await this.generateOtp();
 
-  if(!user){
-    user=this.userRepository.create({phoneNumber,otp })
+    if (!user) {
+      user = this.userRepository.create({ phoneNumber, otp })
+      await this.userRepository.save(user)
+      return { message: "User registered Successfully. OTP sent.", otp }
+    }
+
+    user.otp = otp;
     await this.userRepository.save(user)
-    return {message: "User registered Successfully. OTP sent.", otp}
+    return { message: "OTP sent for login.", otp }
   }
-
-  user.otp=otp;
-  await this.userRepository.save(user)
-  return { message : "OTP sent for login.", otp}
-}
 
 
 
