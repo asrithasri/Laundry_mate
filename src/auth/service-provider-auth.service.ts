@@ -1,9 +1,11 @@
 // src/auth/service-provider-auth.service.ts
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ServiceProvider } from '../service-provider/entities/service-provider.entity';
 import { LoginDto } from 'src/users/dto/login.dto';
+import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { generateAuthToken } from 'src/utils/auth-token';
 
 
 @Injectable()
@@ -30,5 +32,17 @@ export class ServiceProviderAuthService {
     provider.otp = await this.generateOtp();
     await this.serviceProviderRepository.save(provider);
     return { message: 'OTP sent for login.', otp: provider.otp };
+  }
+
+  async verifyOtp(verifyOtpDto: VerifyOtpDto): Promise<{ message: string; authToken?: string ; role:string }> {
+    const { phoneNumber, otp } = verifyOtpDto;
+
+    const provider = await this.serviceProviderRepository.findOne({ where: { phoneNumber } });
+    if (!provider) throw new BadRequestException('Service provider not found.');
+
+    if (provider.otp !== otp) throw new BadRequestException('Invalid OTP.');
+
+    const authToken = generateAuthToken();
+    return { message: 'OTP verified successfully.', authToken : authToken , role:"service_provider"};
   }
 }
