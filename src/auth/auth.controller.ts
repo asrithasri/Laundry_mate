@@ -13,34 +13,34 @@ export class AuthController {
     private readonly serviceProviderAuthService: ServiceProviderAuthService,) { }
 
 
-  @Post('login')
-  async loginOrRegister(@Body() loginDto: LoginDto) {
-    const { role } = loginDto;
+//   @Post('login')
+//   async loginOrRegister(@Body() loginDto: LoginDto) {
+//     const { role } = loginDto;
 
-    if (role === 'user') {
-      return this.userAuthService.loginOrRegister(loginDto);
+//     if (role === 'user') {
+//       return this.userAuthService.loginOrRegister(loginDto);
 
-    } else if (role === 'service_provider') {
-      return this.serviceProviderAuthService.loginOrRegister(loginDto);
+//     } else if (role === 'service_provider') {
+//       return this.serviceProviderAuthService.loginOrRegister(loginDto);
 
-    } else {
-      throw new BadRequestException('Invalid role');
-    }
-  }
+//     } else {
+//       throw new BadRequestException('Invalid role');
+//     }
+//   }
 
 
-  @Post('verify-otp')
-  async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto) {
-    const { role } = verifyOtpDto;
+//   @Post('verify-otp')
+//   async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto) {
+//     const { role } = verifyOtpDto;
 
-    if (role === 'user') {
-      return this.userAuthService.verifyOtp(verifyOtpDto);
-    } else if (role === 'service_provider') {
-      return this.serviceProviderAuthService.verifyOtp(verifyOtpDto);
-    } else {
-      throw new BadRequestException('Invalid role');
-    }
-  }
+//     if (role === 'user') {
+//       return this.userAuthService.verifyOtp(verifyOtpDto);
+//     } else if (role === 'service_provider') {
+//       return this.serviceProviderAuthService.verifyOtp(verifyOtpDto);
+//     } else {
+//       throw new BadRequestException('Invalid role');
+//     }
+//   }
 
 }
 

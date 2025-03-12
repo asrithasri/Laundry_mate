@@ -1,22 +1,34 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import {  VerifyOtpDto } from './dto/verify-otp.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('login')
-
-  async loginOrRegister (@Body() loginDto: LoginDto){
+  async login (@Body() loginDto: LoginDto){
     console.log(loginDto);
-    return this.usersService.loginOrRegister(loginDto)
+    return this.usersService.login(loginDto)
 
   }
 
+  @Post('register')
+  async register(@Body() registerDto: RegisterDto){
+    console.log(registerDto);
+    return this.usersService.register(registerDto)
+  }
 
+
+  @Post("verify-otp")
+  async verifyOtp (@Body() verifyOtpDto: VerifyOtpDto ){
+    console.log(verifyOtpDto);
+    return this.usersService.verifyOtp (verifyOtpDto)
+    
+  }
 
 
 

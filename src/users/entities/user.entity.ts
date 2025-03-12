@@ -4,15 +4,20 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn
 
 export class User {
     @PrimaryGeneratedColumn()
-    id : number;
+    id: number;
 
-    @Column({unique: true, length: 10})
+    @Column({ unique: true, length: 10 })
     phoneNumber: string;
 
-    @Column({nullable : true})
+    @Column({ nullable: true })
     otp: string;
-    
+
+    @Column({nullable: false})
+    name?: string;
+
     @CreateDateColumn()
     createdAt: Date;
+
+
 
 }
